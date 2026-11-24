@@ -173,6 +173,7 @@ def test_iniciar_em_segundo_plano_dispara_processo(config, monkeypatch):
 
     monkeypatch.setattr(atualizacao.subprocess, "Popen", Falso)
     monkeypatch.setattr(atualizacao, "NO_WINDOWS", False)  # o caso do Windows tem teste próprio
+    monkeypatch.setattr(atualizacao, "atualizacao_em_andamento", lambda cfg: False)  # a trava não entra aqui
     r = atualizacao.iniciar_em_segundo_plano(config, origem="web", completa=True)
     assert r == {"iniciada": True}
     comando, kwargs = chamadas[0]
