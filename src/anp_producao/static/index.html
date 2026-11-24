@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Produção ANP por campo</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230F1C2E'/%3E%3Cpath d='M16 6c4 6 7 9.5 7 13a7 7 0 0 1-14 0c0-3.5 3-7 7-13z' fill='none' stroke='%23C47A3D' stroke-width='2'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <script src="/static/vendor/echarts.min.js" defer></script>
+  <script src="/static/js/app.js" type="module"></script>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-atualizar" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></symbol>
+    <symbol id="i-mais" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-lapis" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+    <symbol id="i-baixar" viewBox="0 0 24 24"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></symbol>
+    <symbol id="i-subir" viewBox="0 0 24 24"><path d="M12 21V9"/><path d="m7 14 5-5 5 5"/><path d="M5 3h14"/></symbol>
+    <symbol id="i-imagem" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></symbol>
+    <symbol id="i-relogio" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-alerta" viewBox="0 0 24 24"><path d="M12 3 2 20h20z"/><path d="M12 10v4M12 17h.01"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></symbol>
+  </svg>
+
+  <header class="topo">
+    <div>
+      <div class="eyebrow">Dados abertos da ANP</div>
+      <h1>Produção por campo</h1>
+    </div>
+    <div class="topo-acoes">
+      <button id="btn-revisoes" class="btn btn-pequeno aviso-revisoes oculto" type="button">
+        <svg class="icone"><use href="#i-alerta"/></svg><span></span>
+      </button>
+      <div id="status-base" class="status-base" aria-live="polite">
+        <strong><span class="ponto vazio"></span><span id="status-titulo">Carregando</span></strong>
+        <span id="status-detalhe"></span>
+      </div>
+      <div id="progresso" class="progresso oculto" aria-live="polite">
+        <small id="progresso-texto">Iniciando</small>
+        <div class="barra"><i id="progresso-barra"></i></div>
+      </div>
+      <button id="btn-historico" class="btn btn-secundario btn-pequeno" type="button" title="Histórico de atualizações">
+        <svg class="icone"><use href="#i-relogio"/></svg>Histórico
+      </button>
+      <button id="btn-atualizar" class="btn btn-primario" type="button">
+        <svg class="icone"><use href="#i-atualizar"/></svg>Atualizar base
+      </button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="lateral">
+      <section class="card">
+        <div class="cabecalho-secao">
+          <h2>Clusters</h2>
+          <button id="btn-novo-cluster" class="btn btn-secundario btn-pequeno" type="button">
+            <svg class="icone"><use href="#i-mais"/></svg>Novo
+          </button>
+        </div>
+        <ul id="lista-clusters" class="lista" aria-label="Clusters salvos"></ul>
+        <div class="cabecalho-secao" style="margin: 14px 0 0;">
+          <button id="btn-exportar-clusters" class="btn-texto" type="button"><svg class="icone"><use href="#i-baixar"/></svg> Exportar</button>
+          <label class="btn-texto" for="arquivo-clusters" style="cursor:pointer"><svg class="icone"><use href="#i-subir"/></svg> Importar</label>
+          <input id="arquivo-clusters" type="file" accept="application/json,.json" class="oculto">
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="cabecalho-secao"><h2>Campos</h2><span id="total-campos" class="item meta"></span></div>
+        <input id="busca-campos" class="campo-texto" type="search" placeholder="Buscar campo" autocomplete="off" aria-label="Buscar campo">
+        <div class="filtros-busca">
+          <select id="filtro-bacia" class="seletor" aria-label="Filtrar por bacia"><option value="">Todas as bacias</option></select>
+          <select id="filtro-operador" class="seletor" aria-label="Filtrar por operador"><option value="">Todos os operadores</option></select>
+        </div>
+        <ul id="lista-campos" class="lista" aria-label="Campos"></ul>
+      </section>
+
+      <section class="card">
+        <div class="cabecalho-secao"><h2>Outros recortes</h2></div>
+        <select id="atalhos" class="seletor" aria-label="Adicionar recorte">
+          <option value="">Adicionar bacia, operador, empresa</option>
+        </select>
+      </section>
+    </aside>
+
+    <section class="principal">
+      <div class="card" id="painel-controles">
+        <div class="selecionados" id="selecionados" aria-label="Selecionados"></div>
+        <div class="controles" style="margin-top: 14px;">
+          <div class="controle largo">
+            <label for="sel-variavel">Variável</label>
+            <select id="sel-variavel" class="seletor"></select>
+          </div>
+          <div class="controle">
+            <label for="sel-unidade">Unidade</label>
+            <select id="sel-unidade" class="seletor"></select>
+          </div>
+          <div class="controle">
+            <label for="sel-periodo">Período</label>
+            <select id="sel-periodo" class="seletor">
+              <option value="12">Últimos 12 meses</option>
+              <option value="36">Últimos 3 anos</option>
+              <option value="60" selected>Últimos 5 anos</option>
+              <option value="120">Últimos 10 anos</option>
+              <option value="tudo">Histórico completo</option>
+              <option value="personalizado">Escolher datas</option>
+            </select>
+          </div>
+          <div class="controle oculto" id="controle-datas">
+            <span class="rotulo">De / até</span>
+            <div class="linha">
+              <input id="data-inicio" type="month" class="campo-texto" aria-label="Mês inicial">
+              <input id="data-fim" type="month" class="campo-texto" aria-label="Mês final">
+            </div>
+          </div>
+          <div class="controle">
+            <span class="rotulo">Visão</span>
+            <div class="segmentado" role="group" aria-label="Visão" id="seg-visao">
+              <button type="button" data-visao="" aria-pressed="true">Total</button>
+              <button type="button" data-visao="campo" aria-pressed="false">Por campo</button>
+              <button type="button" data-visao="poco" aria-pressed="false">Por poço</button>
+              <button type="button" data-visao="instalacao" aria-pressed="false">Por instalação</button>
+            </div>
+          </div>
+          <div class="controle largo">
+            <label for="sel-participacao">Participação</label>
+            <input id="sel-participacao" class="campo-texto" list="lista-empresas" placeholder="Bruta (100% do campo)" autocomplete="off">
+            <datalist id="lista-empresas"></datalist>
+          </div>
+        </div>
+      </div>
+
+      <div id="area-vazia" class="card vazio-grande oculto">
+        <div class="eyebrow" style="justify-content:center">Primeiro passo</div>
+        <h3>A base ainda está vazia</h3>
+        <p>Clique em Atualizar base para baixar o histórico de produção por poço publicado pela ANP, de 1941 até o mês mais recente. São cerca de 630 MB e leva alguns minutos; os anos mais recentes ficam disponíveis primeiro.</p>
+        <button class="btn btn-primario" type="button" data-acao="atualizar"><svg class="icone"><use href="#i-atualizar"/></svg>Atualizar base</button>
+      </div>
+
+      <div id="area-dados">
+        <div id="kpis" class="kpis" aria-live="polite"></div>
+
+        <div class="card cartao-grafico" id="cartao-grafico" style="margin-top: 20px;">
+          <div class="barra-ferramentas">
+            <div class="titulo-grafico" id="titulo-grafico"></div>
+            <div style="display:flex; gap:8px; flex-wrap: wrap;">
+              <button class="btn btn-secundario btn-pequeno" type="button" id="btn-link" title="Copiar link desta visão">
+                <svg class="icone"><use href="#i-link"/></svg>Link
+              </button>
+              <button class="btn btn-secundario btn-pequeno" type="button" id="btn-imagem"><svg class="icone"><use href="#i-imagem"/></svg>Imagem</button>
+              <button class="btn btn-secundario btn-pequeno" type="button" id="btn-csv"><svg class="icone"><use href="#i-baixar"/></svg>CSV</button>
+              <button class="btn btn-primario btn-pequeno" type="button" id="btn-excel"><svg class="icone"><use href="#i-baixar"/></svg>Excel</button>
+            </div>
+          </div>
+          <div id="grafico" class="grafico" role="img" aria-label="Gráfico da produção"></div>
+          <div id="avisos" class="avisos"></div>
+        </div>
+
+        <div class="card secao" style="margin-top: 20px;">
+          <div class="cabecalho-secao">
+            <h2>Tabela mensal</h2>
+            <button class="btn-texto" type="button" id="btn-alternar-tabela" aria-expanded="false">Mostrar</button>
+          </div>
+          <div id="tabela-mensal" class="tabela-wrap oculto"></div>
+        </div>
+
+        <div class="card secao oculto" id="cartao-detalhe" style="margin-top: 20px;">
+          <div class="cabecalho-secao">
+            <h2 id="titulo-detalhe">Detalhe do mês</h2>
+            <div style="display:flex; gap: 10px; align-items:center; flex-wrap: wrap;">
+              <div class="segmentado" role="group" aria-label="Detalhar por" id="seg-detalhe">
+                <button type="button" data-quebra="poco" aria-pressed="true">Poços</button>
+                <button type="button" data-quebra="instalacao" aria-pressed="false">Instalações</button>
+                <button type="button" data-quebra="campo" aria-pressed="false">Campos</button>
+              </div>
+              <input id="mes-detalhe" type="month" class="campo-texto" style="width: 190px;" aria-label="Mês do detalhe">
+              <button class="btn btn-secundario btn-pequeno" type="button" id="btn-detalhe-csv"><svg class="icone"><use href="#i-baixar"/></svg>CSV</button>
+              <button class="btn btn-secundario btn-pequeno" type="button" id="btn-detalhe-excel"><svg class="icone"><use href="#i-baixar"/></svg>Excel</button>
+            </div>
+          </div>
+          <p id="resumo-detalhe" style="margin: 0 0 10px; font-size: 12.5px;"></p>
+          <div id="tabela-detalhe" class="tabela-wrap"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <span>Fonte: ANP, dados abertos de produção por poço (Fase de Desenvolvimento e Produção). Petróleo = óleo + condensado. 1 m³ = 6,28981 bbl; 1.000 m³ de gás = 6,28981 boe.</span>
+    <span><a href="/docs" target="_blank" rel="noopener">API para agentes</a></span>
+  </footer>
+
+  <dialog id="modal-cluster" aria-labelledby="titulo-modal-cluster">
+    <form method="dialog" id="form-cluster">
+      <div class="modal-topo">
+        <h3 id="titulo-modal-cluster">Novo cluster</h3>
+        <button class="btn-texto" value="cancelar" type="submit" aria-label="Fechar">✕</button>
+      </div>
+      <div class="modal-corpo">
+        <div class="grade-form">
+          <div class="controle inteiro">
+            <label for="cl-nome">Nome</label>
+            <input id="cl-nome" class="campo-texto" required maxlength="80" placeholder="Ex.: Polo Recôncavo">
+          </div>
+          <div class="controle inteiro">
+            <label for="cl-descricao">Descrição (opcional)</label>
+            <input id="cl-descricao" class="campo-texto" maxlength="200">
+          </div>
+          <div class="controle inteiro">
+            <span class="rotulo">Cor</span>
+            <div class="cores" id="cl-cores"></div>
+          </div>
+          <div class="controle inteiro">
+            <span class="rotulo">Campos escolhidos à mão</span>
+            <input id="cl-busca" class="campo-texto" type="search" placeholder="Buscar campo para incluir" autocomplete="off">
+            <ul id="cl-resultados" class="lista" style="max-height: 150px; overflow:auto;"></ul>
+            <div id="cl-incluidos" class="lista-chips"></div>
+          </div>
+          <div class="controle inteiro">
+            <span class="rotulo">Regra automática (puxa campos novos sozinha)</span>
+          </div>
+          <div class="controle"><span class="rotulo">Operadores</span><div class="multi" data-criterio="operadores"></div></div>
+          <div class="controle"><span class="rotulo">Empresas sócias</span><div class="multi" data-criterio="empresas"></div></div>
+          <div class="controle"><span class="rotulo">Bacias</span><div class="multi" data-criterio="bacias"></div></div>
+          <div class="controle"><span class="rotulo">Estados</span><div class="multi" data-criterio="estados"></div></div>
+          <div class="controle"><span class="rotulo">Ambiente</span><div class="multi" data-criterio="ambientes"></div></div>
+          <div class="controle"><span class="rotulo">Situação</span><div class="multi" data-criterio="situacoes"></div></div>
+          <label class="inteiro" style="display:flex; gap:8px; align-items:center;">
+            <input type="checkbox" id="cl-ativos" style="accent-color: var(--copper)"> Só campos com produção nos últimos 12 meses
+          </label>
+          <div class="controle inteiro">
+            <span class="rotulo">Campos excluídos</span>
+            <div id="cl-excluidos" class="lista-chips"></div>
+          </div>
+          <div class="inteiro previa" id="cl-previa" aria-live="polite"></div>
+        </div>
+      </div>
+      <div class="modal-rodape">
+        <button class="btn btn-secundario btn-perigo oculto" type="button" id="cl-apagar">Apagar</button>
+        <span></span>
+        <div style="display:flex; gap: 10px;">
+          <button class="btn btn-secundario" value="cancelar" type="submit">Cancelar</button>
+          <button class="btn btn-primario" type="button" id="cl-salvar">Salvar</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="modal-revisoes" aria-labelledby="titulo-revisoes">
+    <div class="modal-topo">
+      <h3 id="titulo-revisoes">Revisões da ANP</h3>
+      <button class="btn-texto" type="button" data-fechar aria-label="Fechar">✕</button>
+    </div>
+    <div class="modal-corpo">
+      <p style="margin-top:0">Meses que já estavam na base e mudaram de valor quando a ANP republicou os arquivos.</p>
+      <div id="tabela-revisoes" class="tabela-wrap"></div>
+    </div>
+    <div class="modal-rodape">
+      <span></span>
+      <button class="btn btn-primario" type="button" id="btn-revisoes-vistas">Marcar como vistas</button>
+    </div>
+  </dialog>
+
+  <dialog id="modal-historico" aria-labelledby="titulo-historico">
+    <div class="modal-topo">
+      <h3 id="titulo-historico">Atualizações da base</h3>
+      <button class="btn-texto" type="button" data-fechar aria-label="Fechar">✕</button>
+    </div>
+    <div class="modal-corpo">
+      <div id="info-fonte" style="margin-bottom: 14px; font-size: 13px;"></div>
+      <div id="tabela-historico" class="tabela-wrap"></div>
+    </div>
+    <div class="modal-rodape">
+      <span style="font-size: 12px; max-width: 520px;">A atualização normal baixa de novo só o ano corrente e o anterior e confere o tamanho dos arquivos antigos. A completa baixa tudo outra vez (cerca de 630 MB).</span>
+      <button class="btn btn-secundario" type="button" id="btn-atualizar-completa">Atualização completa</button>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast oculto" role="status"></div>
+</body>
+</html>

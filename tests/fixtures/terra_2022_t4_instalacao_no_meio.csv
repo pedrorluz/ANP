@@ -1,0 +1,5 @@
+﻿Ano,Mês/Ano,Estado,Bacia,Campo,Poço,Ambiente,Produção de Óleo (m³),Produção de Condensado (m³),Produção de Gás Associado (Mm³),Produção de Gás Não Associado (Mm³),Produção de Água (m³),Instalação,Injeção de Gás (Mm³),Injeção de Água para Recuperação Secundária (m³),Injeção de Água para Descarte (m³),Injeção de Gás Carbônico (Mm³),Injeção de Nitrogênio (Mm³),Injeção de Vapor de Água (t),Injeção de Polímeros (m³),Injeção de Outros Fluidos (m³)
+2022,10/2022,Bahia,Recôncavo,CANDEIAS,7-C-100-BA,Terra,"5,2",0,"0,8",0,"12,5",Estação Coletora de Candeias,,,,,,,,
+2022,11/2022,Bahia,Recôncavo,CANDEIAS,7-C-100-BA,Terra,"5,0",0,"0,7",0,"13,1",Estação Coletora de Candeias,,"150,0",,,,,,
+2022,12/2022,Bahia,Recôncavo,CANDEIAS,7-C-100-BA,Terra,"4,9",0,"0,7",0,"13,9",Estação Coletora de Candeias,,,,,,,,,,,
+linha quebrada sem estrutura

@@ -1,0 +1,5 @@
+﻿Ano,Mês/Ano,Campo,Bacia,Instalação,Poço,Estado,Ambiente,Produção de Óleo (m³),Produção de Condensado (m³),Produção de Gás Associado (Mm³),Produção de Gás Não Associado (Mm³),Produção de Água (m³),Injeção de Gás (Mm³),Injeção de Água para Recuperação Secundária (m³),Injeção de Água para Descarte (m³),Injeção de Gás Carbônico (Mm³),Injeção de Nitrogênio (Mm³),Injeção de Vapor de Água (t),Injeção de Polímeros (m³),Injeção de Outros Fluidos (m³)
+2025,out/2025,MATA DE SÃO JOÃO,Recôncavo,Estação Remanso,7-RO-71-BA,Bahia,TERRA,"1,568",0,0,0,"24,121",,,,,,,,
+2025,out/2025,REMANSO,Recôncavo,Estação Remanso,7-RO-71-BA,Bahia,TERRA,"30,751",0,0,0,"472,974",,,,,,,,
+2025,dez/2025,REMANSO,Recôncavo,Estação Remanso,7-RO-71-BA,Bahia,TERRA,"33,608",0,0,0,"513,825",,,,,,,,
+2025,nov/2025,"CAMPO, COM VÍRGULA",Recôncavo,Estação X,7-X-1-BA,Bahia,TERRA,"10,0",0,0,0,"1,0",,,,,,,,

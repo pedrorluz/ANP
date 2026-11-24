@@ -1,0 +1,8 @@
+﻿[Ano],[Mês/Ano],[Estado],[Bacia],[Campo],[Poço],[Ambiente],[Instalação],[Produção de Óleo (m³)],[Produção de Condensado (m³)],[Produção de Gás Associado (Mm³)],[Produção de Gás Não Associado (Mm³)],[Produção de Água (m³)],[Injeção de Gás (Mm³)],[Injeção de Água para Recuperação Secundária (m³)],[Injeção de Água para Descarte (m³)],[Injeção de Gás Carbônico (Mm³)],[Injeção de Nitrogênio (Mm³)],[Injeção de Vapor de Água (t)],[Injeção de Polímeros (m³)],[Injeção de Outros Fluidos (m³)]
+2026,01/2026,Alagoas,Alagoas,PARU,4-ALS-39-AL,MAR,Estação de Paru,"0,00","414,92","0,000","3.127,441","220,65",,,,,,,,
+2026,01/2026,Bahia,Camamu,MANATI,7-MNT-1-BAS,MAR,PLATAFORMA DE MANATI,"0,00","177,27","0,000","8.804,376","84,52",,,,,,,,
+2026,01/2026,Espírito Santo,Campos,AnC_Jubarte_Nordeste,6-BRSA-1222A-ESS,MAR,Petrobras 58,"85,01","0,00","20,318","0,000","199,49",,,,,,,,
+2026,01/2026,Espírito Santo,Campos,AnC_Jubarte_Sudoeste,6-BRSA-1222A-ESS,MAR,Petrobras 58,"374,04","0,00","89,405","0,000","877,73",,,,,,,,
+2026,08/2026,Rio de Janeiro,Santos,BÚZIOS,7-BUZ-12D-RJS,MAR,PETROBRAS 78,"1.118.730,564","0,00","294.190,027","0,000","10,380",,,,,,,,
+2026,09/2026,Sergipe,Sergipe,TARTARUGA,7-TTG-1DP-SES,MAR,Ponto de Coleta de Tartaruga,"587,63","0,00","61,008","0,000","0,32",,,,,,,,
+2026,09/2026,Sergipe,Sergipe,TARTARUGA,7-TTG-3D-SES,MAR,Ponto de Coleta de Tartaruga,,,,,,"0,000","0,00","0,32","0,000","0,000","0,00","0,00","0,00"

@@ -1,0 +1,7 @@
+Zona,Nome poço ANP,Campo,Bacia,Ambiente,Data,Óleo (m³/d),Condensado (m³/d),Petróleo (m³/d),Gás associado (Mil m³/d),Gás não associado (Mil m³/d),Gás total (Mil m³/d),Água (m³/d),Água injetada para descarte (m³/d),Água injetada para rec. secundária (m³/d),Vapor injetado (t/d),Gás injetado (Mil m³/d),CO2 injetado (Mil m³/d),N2 injetado (Mil m³/d),Outros fluidos injetados (m³/d)
+01MARC32,1-IMET-1-BA,CARDEAL AMARELO,Recôncavo,TERRA,01/04/2026,"0,00","0,00","0,00","0,00","6,15","6,15","0,00","0,00","0,00","0,00","0,00","0,00","0,00","0,00"
+28URUC-04,1-IMET-28-ES,BATUÍRA,Espírito Santo,TERRA,01/04/2026,"1,37","0,00","1,37","0,05","0,00","0,05","0,57","0,00","0,00","0,00","0,00","0,00","0,00","0,00"
+3874,7-ATL-2HP-RJS,ATLANTA,Santos,MAR,01/04/2026,"497,45","0,00","497,45","21,06","0,00","21,06","359,50","0,00","0,00","0,00","0,00","0,00","0,00","0,00"
+CP-ZONA-A,7-CP-1974D-SE,CARMÓPOLIS,Sergipe,TERRA,01/04/2026,"2,50","0,00","2,50","0,10","0,00","0,10","10,00","0,00","0,00","0,00","0,00","0,00","0,00","0,00"
+CP-ZONA-B,7-CP-1974D-SE,CARMÓPOLIS,Sergipe,TERRA,01/04/2026,"1,50","0,00","1,50","0,05","0,00","0,05","5,00","0,00","0,00","0,00","0,00","0,00","0,00","0,00"
+CP-INJ,8-CP-100-SE,CARMÓPOLIS,Sergipe,TERRA,01/04/2026,"0,00","0,00","0,00","0,00","0,00","0,00","0,00","12,00","1.234,56","3,00","0,00","0,00","0,00","0,00"
