@@ -16,7 +16,7 @@ Em **Compute > Instances > Create instance**
 | Shape | Ampere, VM.Standard.A1.Flex, 2 OCPUs e 12 GB de memória (é o limite grátis) |
 | Networking | Deixe criar a rede nova e marque **Assign a public IPv4 address** |
 | SSH keys | **Save private key** e guarde o arquivo (serve para manutenção) |
-| Show advanced options > Management | Em **Paste cloud-init script**, cole o conteúdo de `instalar.sh` depois de trocar `SENHA_SITE` (e, se quiser, `USUARIO_SITE`) |
+| Show advanced options > Management | Em **Paste cloud-init script**, cole o conteúdo de `deploy/instalar.sh` depois de trocar `SENHA_SITE` (e, se quiser, `USUARIO_SITE`) |
 
 Se aparecer **Out of capacity**, tente outro Availability domain, 1 OCPU com 6 GB, ou de novo mais tarde.
 
@@ -42,5 +42,5 @@ sudo journalctl -u anp -u anp-atualizar -n 50     # registros do site e da atual
 # trazer a versão nova do GitHub
 sudo -u anp -H git -C /opt/anp/app pull && sudo -u anp -H bash -c 'cd /opt/anp/app && ~/.local/bin/uv sync --no-dev' && sudo systemctl restart anp
 # trocar a senha
-sudo USUARIO_SITE=anp SENHA_SITE='nova-senha' bash /opt/anp/app/deploy/oracle/instalar.sh
+sudo USUARIO_SITE=anp SENHA_SITE='nova-senha' bash /opt/anp/app/deploy/instalar.sh
 ```

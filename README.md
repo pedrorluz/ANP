@@ -23,7 +23,7 @@ uv run anp servir        # abre o site
 uv run anp atualizar     # atualiza a base sem abrir o site
 ```
 
-Para deixar o site no ar na internet, com senha e sem o seu computador ligado, veja `deploy/oracle/LEIA-ME.md` (Oracle Cloud, plano grátis).
+Para deixar o site no ar na internet, com senha e sem o seu computador ligado, veja `deploy/HOSTINGER.md` (VPS paga no Brasil) ou `deploy/ORACLE.md` (Oracle Cloud, plano grátis).
 
 ## O que o site faz
 

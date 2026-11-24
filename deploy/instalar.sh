@@ -1,10 +1,10 @@
 #!/bin/bash
-# Instala o site de produção ANP numa VM Ubuntu da Oracle Cloud (Always Free).
+# Instala o site de produção ANP num servidor Ubuntu (Hostinger, Oracle, AWS etc.).
 #
-# Uso 1, na criação da VM: cole este arquivo inteiro em "Initialization script"
-#        (Show advanced options > Management > Paste cloud-init script),
-#        depois de trocar USUARIO_SITE e SENHA_SITE logo abaixo.
-# Uso 2, numa VM já criada: sudo USUARIO_SITE=anp SENHA_SITE='sua-senha' bash instalar.sh
+# Uso normal, no terminal do servidor (pede a senha do site sem mostrar na tela):
+#   curl -fsSL https://raw.githubusercontent.com/pedrorluz/ANP/main/deploy/instalar.sh -o instalar.sh
+#   sudo bash instalar.sh
+# Como script de inicialização (cloud-init), troque SENHA_SITE logo abaixo antes de colar.
 #
 # Resultado: site em https://<IP-com-tracos>.sslip.io com senha, HTTPS automático
 # (Caddy + Let's Encrypt), base em /opt/anp/dados e atualização diária às 06h (Brasília).
@@ -17,6 +17,16 @@ set -euo pipefail
 export DEBIAN_FRONTEND=noninteractive
 
 set +x
+if [ "$SENHA_SITE" = "TROQUE-ESTA-SENHA" ] && [ -t 0 ]; then
+  read -r -p "Usuário do site [$USUARIO_SITE]: " resposta
+  USUARIO_SITE="${resposta:-$USUARIO_SITE}"
+  while true; do
+    read -r -s -p "Senha do site: " SENHA_SITE; echo
+    read -r -s -p "Repita a senha: " confirma; echo
+    [ -n "$SENHA_SITE" ] && [ "$SENHA_SITE" = "$confirma" ] && break
+    echo "As senhas não conferem ou estão vazias. Tente de novo."
+  done
+fi
 if [ "$SENHA_SITE" = "TROQUE-ESTA-SENHA" ]; then
   echo "Troque SENHA_SITE antes de instalar." >&2
   exit 1
@@ -108,10 +118,13 @@ $DOMINIO {
 CADDY
 set -x
 
-# A imagem Ubuntu da Oracle bloqueia tudo menos SSH no firewall interno
+# Algumas imagens (a da Oracle, por exemplo) bloqueiam tudo menos SSH no firewall interno
 iptables -C INPUT -p tcp --dport 80 -j ACCEPT 2>/dev/null || iptables -I INPUT 1 -p tcp --dport 80 -j ACCEPT
 iptables -C INPUT -p tcp --dport 443 -j ACCEPT 2>/dev/null || iptables -I INPUT 1 -p tcp --dport 443 -j ACCEPT
 netfilter-persistent save
+if command -v ufw >/dev/null && ufw status | grep -q "Status: active"; then
+  ufw allow 80/tcp && ufw allow 443/tcp
+fi
 
 systemctl daemon-reload
 systemctl enable --now anp.service anp-atualizar.timer
